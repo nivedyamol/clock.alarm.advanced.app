@@ -1,8 +1,8 @@
-// script.js
+ // Alarm variables
+let alarmTime = null;
+let alarmRinging = false;
 
-// Store multiple alarms as objects: {time: "HH:MM", ringing: false}
-let alarms = [];
-
+// Get audio element
 const audio = document.getElementById("alarmSound");
 
 // Show live clock
@@ -15,38 +15,32 @@ function updateClock() {
 
   document.getElementById("clock").textContent = timeString;
 
-  // Check all alarms
-  alarms.forEach(alarm => {
-    if (!alarm.ringing && alarm.time === `${hours}:${minutes}`) {
-      playAlarm(alarm);
-    }
-  });
+  // Check alarm (match HH:MM)
+  if (!alarmRinging && alarmTime && `${hours}:${minutes}` === alarmTime) {
+    playAlarm();
+  }
 }
 
 // Play alarm safely
-function playAlarm(alarm) {
-  alarm.ringing = true;
-  document.getElementById("status").textContent = `⏰ Alarm ringing: ${alarm.time}`;
+function playAlarm() {
+  alarmRinging = true;
+  document.getElementById("status").textContent = "⏰ Alarm ringing!";
   audio.currentTime = 0;
-  audio.play().catch(err => console.log("Audio play error:", err));
+  audio.loop = true; // keep ringing until stopped
+  audio.play().catch(err => {
+    console.log("Audio play error:", err);
+  });
 }
 
 // Update clock every second
 setInterval(updateClock, 1000);
 
-// Set a new alarm
+// Set Alarm
 function setAlarm() {
   const input = document.getElementById("alarmTime").value;
   if (input) {
-    // Prevent duplicates
-    if (alarms.some(a => a.time === input)) {
-      document.getElementById("status").textContent = `Alarm for ${input} already set!`;
-      return;
-    }
-
-    const newAlarm = { time: input, ringing: false };
-    alarms.push(newAlarm);
-    updateAlarmList();
+    alarmTime = input;
+    alarmRinging = false;
     document.getElementById("status").textContent = `Alarm set for ${input}`;
 
     // Unlock audio for autoplay restrictions
@@ -59,33 +53,11 @@ function setAlarm() {
   }
 }
 
-// Stop a specific alarm
-function stopAlarm(index) {
-  alarms[index].ringing = false;
+// Stop Alarm
+function stopAlarm() {
   audio.pause();
   audio.currentTime = 0;
-  document.getElementById("status").textContent = `Alarm for ${alarms[index].time} stopped!`;
-}
-
-// Stop all alarms
-function stopAllAlarms() {
-  alarms.forEach(a => a.ringing = false);
-  audio.pause();
-  audio.currentTime = 0;
-  document.getElementById("status").textContent = "All alarms stopped!";
-}
-
-// Display all alarms in a list with stop buttons
-function updateAlarmList() {
-  const alarmList = document.getElementById("alarmList");
-  alarmList.innerHTML = "";
-  alarms.forEach((alarm, index) => {
-    const li = document.createElement("li");
-    li.textContent = alarm.time + " ";
-    const stopBtn = document.createElement("button");
-    stopBtn.textContent = "Stop";
-    stopBtn.onclick = () => stopAlarm(index);
-    li.appendChild(stopBtn);
-    alarmList.appendChild(li);
-  });
+  alarmRinging = false;
+  alarmTime = null; // clear alarm so it won’t restart
+  document.getElementById("status").textContent = "Alarm stopped!";
 }
