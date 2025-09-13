@@ -1,34 +1,65 @@
-body {
+ body {
   font-family: Arial, sans-serif;
   text-align: center;
-  margin-top: 50px;
+  margin: 0;
+  padding: 0;
   background: url('https://images.nightcafe.studio/jobs/FTJwUF2UUpVCFUzcE5se/FTJwUF2UUpVCFUzcE5se--3--qn47l_8x.jpg?tr=w-1600,c-at_max') no-repeat center center fixed;
-background-size: cover;
-
+  background-size: cover;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 h1 {
-  color: #333;
+  color: #222;
+  background: rgba(255, 255, 255, 0.7);
+  padding: 10px 20px;
+  border-radius: 10px;
 }
 
 #clock {
-  font-size: 48px;
+  font-size: 64px;
   margin: 20px;
-  color: #444;
+  font-weight: bold;
+  color: #111;
+  background: rgba(255, 255, 255, 0.6);
+  padding: 15px 30px;
+  border-radius: 15px;
+  display: inline-block;
 }
 
 .alarm-box {
   margin: 20px;
+  background: rgba(255, 255, 255, 0.6);
+  padding: 15px 25px;
+  border-radius: 12px;
+  display: inline-block;
 }
 
 button {
-  padding: 5px 15px;
+  padding: 8px 20px;
   font-size: 16px;
+  margin: 5px;
   cursor: pointer;
+  border: none;
+  border-radius: 8px;
+  background: #4CAF50;
+  color: white;
+  transition: background 0.3s ease;
+}
+
+button:hover {
+  background: #45a049;
 }
 
 #status {
   margin-top: 20px;
   font-weight: bold;
-  color: green;
+  color: darkgreen;
+  background: rgba(255, 255, 255, 0.6);
+  padding: 10px 15px;
+  border-radius: 8px;
+  display: inline-block;
 }
