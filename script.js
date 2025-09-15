@@ -11,12 +11,12 @@ function updateClock() {
   const hours = now.getHours().toString().padStart(2, "0");
   const minutes = now.getMinutes().toString().padStart(2, "0");
   const seconds = now.getSeconds().toString().padStart(2, "0");
-  const timeString = `${hours}:${minutes}:${seconds}`;
+  const timeString = ${hours}:${minutes}:${seconds};
 
   document.getElementById("clock").textContent = timeString;
 
   // Check alarm (match HH:MM)
-  if (!alarmRinging && alarmTime && `${hours}:${minutes}` === alarmTime) {
+  if (!alarmRinging && alarmTime && ${hours}:${minutes} === alarmTime) {
     playAlarm();
   }
 }
@@ -41,7 +41,7 @@ function setAlarm() {
   if (input) {
     alarmTime = input;
     alarmRinging = false;
-    document.getElementById("status").textContent = `Alarm set for ${input}`;
+    document.getElementById("status").textContent = Alarm set for ${input};
 
     // Unlock audio for autoplay restrictions
     audio.play().then(() => {
