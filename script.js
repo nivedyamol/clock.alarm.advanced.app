@@ -1,40 +1,31 @@
- // Alarm variables
-let alarmTime = null;
-let alarmRinging = false;
+  
+   <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Alarm Clock</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>🕒 Smart Alarm Clock</h1>
 
-// Get audio element
-const audio = document.getElementById("alarmSound");
+  <!-- Live Clock -->
+  <div id="clock"></div>
 
-// Show live clock
-function updateClock() {
-  const now = new Date();
-  const hours = now.getHours().toString().padStart(2, "0");
-  const minutes = now.getMinutes().toString().padStart(2, "0");
-  const seconds = now.getSeconds().toString().padStart(2, "0");
-  const timeString = `${hours}:${minutes}:${seconds}`;
+  <!-- Alarm Input -->
+  <div class="alarm-box">
+    <label for="alarmTime">Set Alarm:</label>
+    <input type="time" id="alarmTime">
+    <button onclick="setAlarm()">Set</button>
+    <button onclick="stopAlarm()">Stop Alarm</button>
+  </div>
 
-  document.getElementById("clock").textContent = timeString;
+  <p id="status"></p>
 
-  // Check alarm (match HH:MM only)
-  if (!alarmRinging && alarmTime && `${hours}:${minutes}` === alarmTime) {
-    playAlarm();
-  }
-}
+  <!-- Alarm Sound -->
+  <audio id="alarmSound" src="lo-fi-alarm-clock-243766.mp3" preload="auto" loop></audio>
 
-// Play alarm safely
-function playAlarm() {
-  alarmRinging = true;
-  document.getElementById("status").textContent = "⏰ Alarm ringing!";
-  audio.currentTime = 0;
-  audio.loop = true; // keep ringing until stopped
-  audio.play().catch(err => {
-    console.log("Audio play error:", err);
-  });
-}
-
-// Update clock every second
-setInterval(updateClock, 1000);
-
-// Set Alarm
-function setAlarm() {
-  const input = document.getEleme
+  <script src="script.js"></script>
+</body>
+</html>
