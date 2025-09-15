@@ -1,31 +1,65 @@
-  
-   <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Smart Alarm Clock</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <h1>🕒 Smart Alarm Clock</h1>
+  // Alarm variables
+let alarmTime = null;
+let alarmRinging = false;
 
-  <!-- Live Clock -->
-  <div id="clock"></div>
+// Get audio element
+const audio = document.getElementById("alarmSound");
 
-  <!-- Alarm Input -->
-  <div class="alarm-box">
-    <label for="alarmTime">Set Alarm:</label>
-    <input type="time" id="alarmTime">
-    <button onclick="setAlarm()">Set</button>
-    <button onclick="stopAlarm()">Stop Alarm</button>
-  </div>
+// Show live clock
+function updateClock() {
+  const now = new Date();
+  const hours = now.getHours().toString().padStart(2, "0");
+  const minutes = now.getMinutes().toString().padStart(2, "0");
+  const seconds = now.getSeconds().toString().padStart(2, "0");
+  const timeString = `${hours}:${minutes}:${seconds}`;
 
-  <p id="status"></p>
+  document.getElementById("clock").textContent = timeString;
 
-  <!-- Alarm Sound -->
-  <audio id="alarmSound" src="lo-fi-alarm-clock-243766.mp3" preload="auto" loop></audio>
+  // Check alarm (match HH:MM only)
+  if (!alarmRinging && alarmTime && `${hours}:${minutes}` === alarmTime) {
+    playAlarm();
+  }
+}
 
-  <script src="script.js"></script>
-</body>
-</html>
+// Play alarm safely
+function playAlarm() {
+  alarmRinging = true;
+  document.getElementById("status").textContent = "⏰ Alarm ringing!";
+  audio.currentTime = 0;
+  audio.loop = true; // keep ringing until stopped
+  audio.play().catch(err => {
+    console.log("Audio play error:", err);
+  });
+}
+
+// Update clock every second
+setInterval(updateClock, 1000);
+
+// Set Alarm
+function setAlarm() {
+  const input = document.getElementById("alarmTime").value;
+  if (input) {
+    alarmTime = input;
+    alarmRinging = false;
+    document.getElementById("status").textContent = `✅ Alarm set for ${input}`;
+
+    // Unlock audio for autoplay restrictions
+    audio.play().then(() => {
+      audio.pause();
+      audio.currentTime = 0;
+    }).catch(err => console.log("Audio unlock error:", err));
+  } else {
+    document.getElementById("status").textContent = "⚠️ Please choose a time!";
+  }
+}
+
+// Stop Alarm
+function stopAlarm() {
+  audio.pause();
+  audio.currentTime = 0;
+  alarmRinging = false;
+  alarmTime = null; // clear alarm so it won’t restart
+  document.getElementById("status").textContent = "⏹️ Alarm stopped!";
+}
+
+
