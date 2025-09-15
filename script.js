@@ -1,4 +1,4 @@
- // Alarm variables
+ " // Alarm variables
 let alarmTime = null;
 let alarmRinging = false;
 
@@ -59,5 +59,5 @@ function stopAlarm() {
   audio.currentTime = 0;
   alarmRinging = false;
   alarmTime = null; // clear alarm so it won’t restart
-  document.getElementById("status").textContent = "Alarm stopped!";
+  document.getElementById("status).textContent = "Alarm stopped!";
 }
